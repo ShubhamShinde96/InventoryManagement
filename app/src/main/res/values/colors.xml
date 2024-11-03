@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimary">#2957A4</color>
+    <color name="colorPrimaryDark">#162f59</color>
+    <color name="colorAccent">#57B755</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="yellow">#fcbe44</color>
+    <color name="red">#E8290B</color>
+    <color name="green">#43ad42</color>
+
+    <color name="iconsColor">#BA5475</color>
+
+    <color name="tabTextColor">#5c5c5c</color>
+    <color name="light_pistachio_color">#E0F1EF</color>
+    <color name="pistachio_color">#36a398</color>
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <color name="ColorPrimary">#29CA97</color>
+    <color name="ColorPrimaryDark">#06ACE4</color>
+    <color name="android_text_color">#747474</color>
+    <color name="app_topbar_color">#AAAAAA</color>
+    <color name="background_color">#E1E2E2</color>
+    <color name="blue">#1589FF</color>
+    <color name="cyan">#00FFFF</color>
+    <color name="gray">#D1D0CE</color>
+    <color name="lightBlue">#ADD8E6</color>
+    <color name="list_background">#06ACE4</color>
+    <color name="list_even">#FFEFEF</color>
+    <color name="list_header">#99979C</color>
+    <color name="list_odd">#E9FFFF</color>
+    <color name="list_selected">#455FB6</color>
+    <color name="primary">#3f51b5</color>
+    <color name="primary_dark">#303f9f</color>
+    <color name="primary_pressed">#E1E2E2</color>
+    <color name="ripple">#F06292</color>
+    <color name="stroke_border">#D7D7D7</color>
+    <color name="text_color">#686868</color>
+</resources>
