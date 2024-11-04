@@ -125,5 +125,9 @@
     <string name="performed_action">Performed Action</string>
     <string name="rejection_message">Rejection Message</string>
     <string name="click_plus_to_add_approver_cc">Click + to add Approver CC</string>
+    <string name="don_t_have_an_account">Don\'t have an account? </string>
+    <string name="sign_up">Sign Up</string>
+    <string name="swami_dairy">Swami Dairy</string>
+    <string name="swami_dairy_image">Swami Dairy Image</string>
 
 </resources>
