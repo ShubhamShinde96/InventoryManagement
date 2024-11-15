@@ -22,5 +22,4 @@ class HostViewModel(
     fun loginUser(username: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
         _loginDetails.postValue(Resource.Loading())
     }
-
 }
