@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Dairy Inventory Management</string>
+    <string name="app_name">Swami Dairy</string>
 
     <string name="selectFirstApprover">Select First Approver</string>
     <string name="selectSecondApprover">Select Second Approver</string>

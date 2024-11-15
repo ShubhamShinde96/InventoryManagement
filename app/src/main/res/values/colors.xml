@@ -9,8 +9,6 @@
 
     <color name="transparent">#00000000</color>
     <color name="yellow">#fcbe44</color>
-    <color name="red">#E8290B</color>
-    <color name="green">#43ad42</color>
 
     <color name="iconsColor">#BA5475</color>
 
@@ -31,9 +29,9 @@
     <color name="android_text_color">#747474</color>
     <color name="app_topbar_color">#AAAAAA</color>
     <color name="background_color">#E1E2E2</color>
-    <color name="blue">#1589FF</color>
+<!--    <color name="blue">#1589FF</color>-->
     <color name="cyan">#00FFFF</color>
-    <color name="gray">#D1D0CE</color>
+<!--    <color name="gray">#D1D0CE</color>-->
     <color name="lightBlue">#ADD8E6</color>
     <color name="list_background">#06ACE4</color>
     <color name="list_even">#FFEFEF</color>
@@ -46,4 +44,16 @@
     <color name="ripple">#F06292</color>
     <color name="stroke_border">#D7D7D7</color>
     <color name="text_color">#686868</color>
+
+    // Rv Item colors
+    <color name="item_yellow">#E8BD0D</color>
+    <color name="blue">#FF1784C7</color>
+    <color name="gray">#bb7b7878</color>
+    <color name="green">#218F76</color>
+    <color name="red">#E8290B</color>
+    <color name="purple">#8B78E6</color>
+    <color name="pink_shade">#BB2CD9</color>
+    <color name="blue2">#1287A5</color>
+    <color name="orange_shade">#EA7773</color>
+    <color name="color1">#AF9F84</color>
 </resources>

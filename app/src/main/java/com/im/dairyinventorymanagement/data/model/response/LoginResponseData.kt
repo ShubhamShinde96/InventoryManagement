@@ -1,3 +1,5 @@
 package com.im.dairyinventorymanagement.data.model.response
 
-data class LoginResponseData(val status: String)
+import com.google.gson.annotations.SerializedName
+
+data class LoginResponseData(@SerializedName("status") val status: String)
