@@ -7,7 +7,7 @@ import com.shubham.newsapiclientproject.data.util.Resource
 
 class UserManagementUseCase(private val repository: Repository) {
 
-    suspend fun loginUser(loginRequestData: LoginRequestData): Resource<LoginResponseData> {
+    suspend fun loginUser(loginRequestData: LoginRequestData): Resource<List<LoginResponseData>> {
         return repository.loginUser(loginRequestData)
     }
 

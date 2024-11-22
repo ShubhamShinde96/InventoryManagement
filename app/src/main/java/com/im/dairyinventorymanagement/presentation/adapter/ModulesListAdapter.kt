@@ -9,8 +9,10 @@ import com.bumptech.glide.Glide
 import com.im.dairyinventorymanagement.data.model.ModuleData
 import com.im.dairyinventorymanagement.databinding.ModuleListItemBinding
 
-class ModulesListAdapter(val itemClickListener: ((ModuleData) -> Unit)? = null) :
+class ModulesListAdapter() :
     RecyclerView.Adapter<ModulesListAdapter.ViewHolder>() {
+
+    var itemClickListener: ((ModuleData) -> Unit)? = null
 
     private val callback = object : DiffUtil.ItemCallback<ModuleData>() {
         override fun areItemsTheSame(oldItem: ModuleData, newItem: ModuleData) =
@@ -18,6 +20,10 @@ class ModulesListAdapter(val itemClickListener: ((ModuleData) -> Unit)? = null) 
 
         override fun areContentsTheSame(oldItem: ModuleData, newItem: ModuleData) =
             oldItem.id == newItem.id
+    }
+
+    fun setItemClickCallback(itemClickListener: ((ModuleData) -> Unit)?) {
+        this.itemClickListener = itemClickListener
     }
 
     val differ = AsyncListDiffer(this, callback)

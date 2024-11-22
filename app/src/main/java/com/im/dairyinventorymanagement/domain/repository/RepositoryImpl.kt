@@ -8,11 +8,11 @@ import retrofit2.Response
 
 class RepositoryImpl(private val apiService: ApiService) : Repository {
 
-    override suspend fun loginUser(loginRequestData: LoginRequestData): Resource<LoginResponseData> {
+    override suspend fun loginUser(loginRequestData: LoginRequestData): Resource<List<LoginResponseData>> {
         return responseToResource(apiService.login(loginRequestData))
     }
 
-    private fun responseToResource(response: Response<LoginResponseData>): Resource<LoginResponseData> {
+    private fun responseToResource(response: Response<List<LoginResponseData>>): Resource<List<LoginResponseData>> {
         if (response.isSuccessful) {
             response.body()?.let {
                 return Resource.Success(it)

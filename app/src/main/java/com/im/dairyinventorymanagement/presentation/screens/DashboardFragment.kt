@@ -63,9 +63,7 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setupAdapter() {
-        modulesListAdapter = ModulesListAdapter() {
-
-        }
+        modulesListAdapter = ModulesListAdapter()
 
         val list = listOf(
             ModuleData(
@@ -133,14 +131,20 @@ class DashboardFragment : Fragment() {
             )
         )
 
-        modulesListAdapter?.let {
-            it.differ.submitList(list)
+        modulesListAdapter?.apply {
+            differ.submitList(list)
+            setItemClickCallback { moduleData ->
+
+            }
         }
 
         binding.recyclerView.apply {
-           adapter = modulesListAdapter
+            adapter = modulesListAdapter
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(GridSpacingItemDecoration(23, 23))
+//            val animation = AnimationUtils.loadLayoutAnimation(context, R.anim.item_anim_fall_down)
+//            layoutAnimation = animation
+//            scheduleLayoutAnimation()
         }
     }
 

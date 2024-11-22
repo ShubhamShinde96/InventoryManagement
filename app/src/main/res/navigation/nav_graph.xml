@@ -9,5 +9,6 @@
         android:id="@+id/dashboardFragment"
         android:name="com.im.dairyinventorymanagement.presentation.screens.DashboardFragment"
         android:label="fragment_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard"
+        app:enterAnim="@anim/slide_out_left"/>
 </navigation>

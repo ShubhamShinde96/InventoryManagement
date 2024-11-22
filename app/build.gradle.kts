@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.im.dairyinventorymanagement"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.im.dairyinventorymanagement"
@@ -37,6 +37,18 @@ android {
     }
     buildFeatures {
         dataBinding = true
+        buildConfig = true
+    }
+    kapt {
+        correctErrorTypes = true
+    }
+    buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"http://3.111.36.244/android/\"")
+        }
+        release {
+            buildConfigField("String", "BASE_URL", "\"http://3.111.36.244/android/\"")
+        }
     }
     kapt {
         correctErrorTypes = true
@@ -65,10 +77,16 @@ dependencies {
     // Networking
     implementation(libs.retrofit)
     implementation(libs.gson)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
 
     // Dependency Injection
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
+    // UI
     implementation(libs.glide)
+//    implementation(libs.motiontoast)
+    implementation(libs.popup.dialog)
+
 }

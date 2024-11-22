@@ -8,7 +8,7 @@ import retrofit2.http.POST
 
 interface ApiService {
 
-    @POST("proxy/login")
-    suspend fun login(@Body request: LoginRequestData): Response<LoginResponseData>
+    @POST("login.php")
+    suspend fun login(@Body request: LoginRequestData): Response<List<LoginResponseData>>
 
 }
