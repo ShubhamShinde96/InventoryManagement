@@ -57,8 +57,10 @@ class ModulesListAdapter() :
 
             Glide.with(binding.moduleImage.context).load(data.image).into(binding.moduleImage)
 
-            binding.root.setOnClickListener {
-                itemClickListener?.let { it(data) }
+            binding.moduleCard.setOnClickListener {
+                itemClickListener?.let {
+                    it(data)
+                }
             }
         }
     }

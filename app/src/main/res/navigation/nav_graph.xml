@@ -9,6 +9,29 @@
         android:id="@+id/dashboardFragment"
         android:name="com.im.dairyinventorymanagement.presentation.screens.DashboardFragment"
         android:label="fragment_dashboard"
-        tools:layout="@layout/fragment_dashboard"
-        app:enterAnim="@anim/slide_out_left"/>
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboardFragment_to_salesFragment"
+            app:destination="@id/salesFragment"
+            app:popUpTo="@id/dashboardFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/salesFragment"
+        android:name="com.im.dairyinventorymanagement.presentation.SalesFragment"
+        android:label="fragment_sales"
+        tools:layout="@layout/fragment_sales" />
+
+    <!--<fragment
+        android:id="@+id/loginFragment"
+        android:name="com.im.dairyinventorymanagement.presentation.screens.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false"/>
+    </fragment>-->
+
 </navigation>

@@ -1,16 +1,20 @@
 package com.im.dairyinventorymanagement.presentation.screens
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.im.dairyinventorymanagement.R
 import com.im.dairyinventorymanagement.data.model.ModuleData
 import com.im.dairyinventorymanagement.databinding.FragmentDashboardBinding
 import com.im.dairyinventorymanagement.presentation.adapter.ModulesListAdapter
 import com.im.dairyinventorymanagement.presentation.utils.GridSpacingItemDecoration
+import com.saadahmedev.popupdialog.PopupDialog
+import com.saadahmedev.popupdialog.listener.StandardDialogActionListener
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -54,11 +58,11 @@ class DashboardFragment : Fragment() {
 
     private fun setupClickListeners() {
         binding.backImgBtn.setOnClickListener {
-            activity?.finish()
+            activity?.onBackPressedDispatcher?.onBackPressed()
         }
 
         binding.logoutImgBtn.setOnClickListener {
-            activity?.finish()
+            showLogoutDialog()
         }
     }
 
@@ -71,7 +75,8 @@ class DashboardFragment : Fragment() {
                 title = "Admin & Legal",
                 description = "Manage your admin & legal operations",
                 image = R.drawable.ic_admin,
-                backgroundColor = R.color.item_yellow
+                backgroundColor = R.color.item_yellow,
+                navigationAction = R.id.action_dashboardFragment_to_salesFragment
             ),
             ModuleData(
                 id = 1,
@@ -134,7 +139,7 @@ class DashboardFragment : Fragment() {
         modulesListAdapter?.apply {
             differ.submitList(list)
             setItemClickCallback { moduleData ->
-
+                findNavController().navigate(moduleData.navigationAction)
             }
         }
 
@@ -146,6 +151,24 @@ class DashboardFragment : Fragment() {
 //            layoutAnimation = animation
 //            scheduleLayoutAnimation()
         }
+    }
+
+    fun showLogoutDialog() {
+        PopupDialog.getInstance(context)
+            .standardDialogBuilder()
+            .createAlertDialog()
+            .setHeading("Logout")
+            .setDescription("Are you sure you want to logout?")
+            .build(object : StandardDialogActionListener {
+                override fun onNegativeButtonClicked(dialog: Dialog?) {
+                    dialog?.dismiss()
+                }
+
+                override fun onPositiveButtonClicked(dialog: Dialog?) {
+                    activity?.finish()
+                }
+            })
+            .show()
     }
 
     companion object {

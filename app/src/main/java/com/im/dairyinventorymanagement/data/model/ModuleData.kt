@@ -5,5 +5,6 @@ data class ModuleData(
     val title: String,
     val description: String,
     val image: Int,
-    val backgroundColor: Int
+    val backgroundColor: Int,
+    val navigationAction: Int = 0
 )
