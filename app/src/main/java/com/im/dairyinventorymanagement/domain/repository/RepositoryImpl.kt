@@ -12,6 +12,10 @@ class RepositoryImpl(private val apiService: ApiService) : Repository {
         return responseToResource(apiService.login(loginRequestData))
     }
 
+    override suspend fun getModulesList(loginRequestData: LoginRequestData): Resource<List<LoginResponseData>> {
+        TODO("Not yet implemented")
+    }
+
     private fun responseToResource(response: Response<List<LoginResponseData>>): Resource<List<LoginResponseData>> {
         if (response.isSuccessful) {
             response.body()?.let {

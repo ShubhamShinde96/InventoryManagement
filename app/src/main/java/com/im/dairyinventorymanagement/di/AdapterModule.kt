@@ -1,4 +1,4 @@
-package com.im.dairyinventorymanagement.presentation.di
+package com.im.dairyinventorymanagement.di
 
 import com.im.dairyinventorymanagement.presentation.adapter.ModulesListAdapter
 import dagger.Module

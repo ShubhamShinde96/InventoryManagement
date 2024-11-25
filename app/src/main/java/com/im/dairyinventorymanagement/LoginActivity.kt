@@ -11,6 +11,8 @@ import androidx.lifecycle.distinctUntilChanged
 import com.im.dairyinventorymanagement.databinding.ActivityLoginBinding
 import com.im.dairyinventorymanagement.presentation.viewmodel.HostViewModel
 import com.im.dairyinventorymanagement.presentation.viewmodel.HostViewModelFactory
+import com.im.dairyinventorymanagement.utils.SharedPreferencesHandler
+import com.im.dairyinventorymanagement.utils.SharedPreferencesHandler.Companion.LOGIN_STATUS
 import com.saadahmedev.popupdialog.PopupDialog
 import com.shubham.newsapiclientproject.data.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +25,9 @@ class LoginActivity : AppCompatActivity() {
 
     @Inject
     lateinit var factory: HostViewModelFactory
+
+    @Inject
+    lateinit var sharedPrefsHandler: SharedPreferencesHandler
 
     lateinit var viewModel: HostViewModel
 
@@ -37,11 +42,16 @@ class LoginActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, factory).get(HostViewModel::class.java)
 
         binding.loginBtn.setOnClickListener {
+//            sharedPrefsHandler.putBoolean(LOGIN_STATUS, true)
 //            startActivity(Intent(this, HostActivity::class.java))
             viewModel.loginUser(binding.username.text.toString(), binding.password.text.toString())
         }
 
         dialog = PopupDialog.getInstance(this)
+
+        if (sharedPrefsHandler.getBoolean(LOGIN_STATUS, false)) {
+            startActivity(Intent(this, HostActivity::class.java))
+        }
 
         viewModel.loginDetails.distinctUntilChanged().observe(this) {
             when (it) {
@@ -69,6 +79,7 @@ class LoginActivity : AppCompatActivity() {
                             .build(Dialog::dismiss)
                             .show()
                     } else {
+                        sharedPrefsHandler.putBoolean(LOGIN_STATUS, true)
                         startActivity(Intent(this, HostActivity::class.java))
                     }
                 }

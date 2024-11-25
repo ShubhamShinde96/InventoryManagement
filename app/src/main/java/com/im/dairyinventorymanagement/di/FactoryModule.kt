@@ -1,4 +1,4 @@
-package com.im.dairyinventorymanagement.presentation.di
+package com.im.dairyinventorymanagement.di
 
 import android.app.Application
 import com.im.dairyinventorymanagement.domain.usecase.UserManagementUseCase

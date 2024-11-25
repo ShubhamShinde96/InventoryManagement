@@ -7,4 +7,6 @@ import com.shubham.newsapiclientproject.data.util.Resource
 interface Repository {
 
     suspend fun loginUser(loginRequestData: LoginRequestData): Resource<List<LoginResponseData>>
+
+    suspend fun getModulesList(loginRequestData: LoginRequestData): Resource<List<LoginResponseData>>
 }

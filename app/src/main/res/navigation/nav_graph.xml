@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/salesFragment"
-        android:name="com.im.dairyinventorymanagement.presentation.SalesFragment"
+        android:name="com.im.dairyinventorymanagement.presentation.screens.SalesFragment"
         android:label="fragment_sales"
         tools:layout="@layout/fragment_sales" />
 

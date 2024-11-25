@@ -10,9 +10,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.im.dairyinventorymanagement.R
 import com.im.dairyinventorymanagement.data.model.ModuleData
+import com.im.dairyinventorymanagement.data.repository.ModulesData
 import com.im.dairyinventorymanagement.databinding.FragmentDashboardBinding
 import com.im.dairyinventorymanagement.presentation.adapter.ModulesListAdapter
 import com.im.dairyinventorymanagement.presentation.utils.GridSpacingItemDecoration
+import com.im.dairyinventorymanagement.utils.SharedPreferencesHandler
 import com.saadahmedev.popupdialog.PopupDialog
 import com.saadahmedev.popupdialog.listener.StandardDialogActionListener
 
@@ -76,70 +78,87 @@ class DashboardFragment : Fragment() {
                 description = "Manage your admin & legal operations",
                 image = R.drawable.ic_admin,
                 backgroundColor = R.color.item_yellow,
-                navigationAction = R.id.action_dashboardFragment_to_salesFragment
+                navigationActionRouteName = "SwamiDairy/Sales"
             ),
             ModuleData(
                 id = 1,
                 title = "Master",
                 description = "Maintain your master",
                 image = R.drawable.ic_master,
-                backgroundColor = R.color.ripple
+                backgroundColor = R.color.ripple,
+                navigationActionRouteName = "SwamiDairy/Maintain"
             ),
             ModuleData(
                 id = 1,
                 title = "Sales & Distribution",
                 description = "Manage Sales & Distributions across your business",
                 image = R.drawable.ic_sales_and_distribution,
-                backgroundColor = R.color.blue
+                backgroundColor = R.color.blue,
+                navigationActionRouteName = "SwamiDairy/Distributions"
             ),
             ModuleData(
                 id = 1,
                 title = "Purchase Procurement",
                 description = "Manage Purchase & Procurements.",
                 image = R.drawable.ic_purchase_procurement,
-                backgroundColor = R.color.green
+                backgroundColor = R.color.green,
+                navigationActionRouteName = "SwamiDairy/Procurements"
             ),
             ModuleData(
                 id = 1,
                 title = "Production & Planning",
                 description = "Maintain your Production and Planning",
                 image = R.drawable.ic_production_and_planning,
-                backgroundColor = R.color.purple
+                backgroundColor = R.color.purple,
+                navigationActionRouteName = "SwamiDairy/Maintain"
             ),
             ModuleData(
                 id = 1,
                 title = "Quality Management",
                 description = "Check your Quality Management practices",
                 image = R.drawable.ic_quality,
-                backgroundColor = R.color.color1
+                backgroundColor = R.color.color1,
+                navigationActionRouteName = "SwamiDairy/Quality"
             ),
             ModuleData(
                 id = 1,
                 title = "Material Management",
                 description = "Manage your material",
                 image = R.drawable.ic_material_management,
-                backgroundColor = R.color.orange_shade
+                backgroundColor = R.color.orange_shade,
+                navigationActionRouteName = "SwamiDairy/Material"
             ),
             ModuleData(
                 id = 1,
                 title = "Maintenance",
                 description = "Manage Maintenance",
                 image = R.drawable.ic_maintenance,
-                backgroundColor = R.color.blue2
+                backgroundColor = R.color.blue2,
+                navigationActionRouteName = "SwamiDairy/Maintenance"
             ),
             ModuleData(
                 id = 1,
                 title = "HR Management",
                 description = "Manage your Human Resources",
                 image = R.drawable.ic_hr_management,
-                backgroundColor = R.color.primary
+                backgroundColor = R.color.primary,
+                navigationActionRouteName = "SwamiDairy/Resources"
             )
         )
 
         modulesListAdapter?.apply {
             differ.submitList(list)
             setItemClickCallback { moduleData ->
-                findNavController().navigate(moduleData.navigationAction)
+//                findNavController().navigate(moduleData.navigationActionRouteName)
+                ModulesData.getAction(moduleData.navigationActionRouteName)?.let { findNavController().navigate(it) } ?: run {
+                    PopupDialog.getInstance(context)
+                        .statusDialogBuilder()
+                        .createWarningDialog()
+                        .setHeading("Ops!")
+                        .setDescription("Seems like this feature is not available. Please contact your service provider.")
+                        .build(Dialog::dismiss)
+                        .show()
+                }
             }
         }
 
@@ -165,7 +184,10 @@ class DashboardFragment : Fragment() {
                 }
 
                 override fun onPositiveButtonClicked(dialog: Dialog?) {
-                    activity?.finish()
+                    activity?.let {
+                        SharedPreferencesHandler(it).clearSharedPreferences()
+                        it.finish()
+                    }
                 }
             })
             .show()

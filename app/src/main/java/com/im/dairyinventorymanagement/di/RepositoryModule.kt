@@ -1,4 +1,4 @@
-package com.im.dairyinventorymanagement.presentation.di
+package com.im.dairyinventorymanagement.di
 
 import com.im.dairyinventorymanagement.data.api.ApiService
 import com.im.dairyinventorymanagement.domain.repository.Repository

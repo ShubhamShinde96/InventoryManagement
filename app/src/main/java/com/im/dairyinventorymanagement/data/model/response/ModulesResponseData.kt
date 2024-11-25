@@ -1,6 +1,6 @@
-package com.im.dairyinventorymanagement.data.model
+package com.im.dairyinventorymanagement.data.model.response
 
-data class ModuleData(
+data class ModulesResponseData(
     val id: Int,
     val title: String,
     val description: String,
