@@ -8,6 +8,7 @@ import androidx.navigation.Navigation
 import com.im.dairyinventorymanagement.databinding.ActivityHostBinding
 import com.im.dairyinventorymanagement.presentation.viewmodel.HostViewModel
 import com.im.dairyinventorymanagement.presentation.viewmodel.HostViewModelFactory
+import com.im.dairyinventorymanagement.utils.SharedPreferencesHandler
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -18,6 +19,9 @@ class HostActivity : AppCompatActivity() {
 
     @Inject
     lateinit var factory: HostViewModelFactory
+
+    @Inject
+    lateinit var sharedPrefsHandler: SharedPreferencesHandler
 
     lateinit var viewModel: HostViewModel
 

@@ -37,6 +37,6 @@ class SharedPreferencesHandler(val context: Context) {
 
     companion object {
         private const val INVENTORY_SHARED_PREFS = "INVENTORY_SHARED_PREFS"
-        const val LOGIN_STATUS = "LOGIN_STATUS"
+        const val LOGIN_DETAILS = "LOGIN_DETAILS"
     }
 }

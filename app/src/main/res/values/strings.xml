@@ -45,6 +45,7 @@
     <string name="birth_date">Birth date</string>
     <string name="my_profile">My Profile</string>
     <string name="logout">Logout</string>
+    <string name="logout_question">Are you sure you want to logout?</string>
     <string name="gender">Gender</string>
     <string name="blood_group">Blood Group</string>
     <string name="passport_number">Passport Number</string>

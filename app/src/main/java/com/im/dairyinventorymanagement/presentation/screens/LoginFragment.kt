@@ -58,7 +58,7 @@ class LoginFragment : Fragment() {
         }
 
         viewModel.loginDetails.observe(viewLifecycleOwner) {
-            if (it.data?.first()?.emp_id == "0") {
+            if (it.data?.first()?.status?.lowercase() == "success") {
                 PopupDialog.getInstance(context)
                     .statusDialogBuilder()
                     .createErrorDialog()

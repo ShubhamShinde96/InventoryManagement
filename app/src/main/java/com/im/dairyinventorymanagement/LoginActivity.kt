@@ -8,11 +8,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.distinctUntilChanged
+import com.google.gson.Gson
+import com.im.dairyinventorymanagement.data.model.response.LoginResponseData
 import com.im.dairyinventorymanagement.databinding.ActivityLoginBinding
 import com.im.dairyinventorymanagement.presentation.viewmodel.HostViewModel
 import com.im.dairyinventorymanagement.presentation.viewmodel.HostViewModelFactory
 import com.im.dairyinventorymanagement.utils.SharedPreferencesHandler
-import com.im.dairyinventorymanagement.utils.SharedPreferencesHandler.Companion.LOGIN_STATUS
+import com.im.dairyinventorymanagement.utils.SharedPreferencesHandler.Companion.LOGIN_DETAILS
 import com.saadahmedev.popupdialog.PopupDialog
 import com.shubham.newsapiclientproject.data.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,14 +44,12 @@ class LoginActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, factory).get(HostViewModel::class.java)
 
         binding.loginBtn.setOnClickListener {
-//            sharedPrefsHandler.putBoolean(LOGIN_STATUS, true)
-//            startActivity(Intent(this, HostActivity::class.java))
             viewModel.loginUser(binding.username.text.toString(), binding.password.text.toString())
         }
 
         dialog = PopupDialog.getInstance(this)
 
-        if (sharedPrefsHandler.getBoolean(LOGIN_STATUS, false)) {
+        (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, ""), LoginResponseData::class.java))?.let {
             startActivity(Intent(this, HostActivity::class.java))
         }
 
@@ -71,16 +71,16 @@ class LoginActivity : AppCompatActivity() {
 
                 is Resource.Success -> {
                     binding.dimmingOverlay.visibility = View.GONE
-                    if (it.data?.first()?.emp_id == "0") {
+                    if (it.data?.first()?.status?.lowercase() == "success") {
+                        sharedPrefsHandler.putString(LOGIN_DETAILS, Gson().toJson(it.data.first()))
+                        startActivity(Intent(this, HostActivity::class.java))
+                    } else {
                         dialog.statusDialogBuilder()
                             .createErrorDialog()
                             .setHeading("Login Failed!")
                             .setDescription("Please check your credentials and try again.")
                             .build(Dialog::dismiss)
                             .show()
-                    } else {
-                        sharedPrefsHandler.putBoolean(LOGIN_STATUS, true)
-                        startActivity(Intent(this, HostActivity::class.java))
                     }
                 }
             }

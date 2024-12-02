@@ -16,7 +16,7 @@
             android:elevation="0dp"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
-            tools:cardBackgroundColor="@color/item_yellow"
+            app:cardBackgroundColor="@color/purple"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:cardMaxElevation="0dp"
@@ -35,7 +35,7 @@
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:elevation="0dp"
-                    tools:cardBackgroundColor="@color/item_yellow"
+                    app:cardBackgroundColor="@color/item_yellow"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="0dp"
                     app:cardMaxElevation="0dp">

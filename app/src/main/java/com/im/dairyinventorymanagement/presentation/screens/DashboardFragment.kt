@@ -6,17 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.im.dairyinventorymanagement.HostActivity
 import com.im.dairyinventorymanagement.R
-import com.im.dairyinventorymanagement.data.model.ModuleData
+import com.im.dairyinventorymanagement.data.model.response.LoginResponseData
+import com.im.dairyinventorymanagement.data.model.response.Module
 import com.im.dairyinventorymanagement.data.repository.ModulesData
 import com.im.dairyinventorymanagement.databinding.FragmentDashboardBinding
 import com.im.dairyinventorymanagement.presentation.adapter.ModulesListAdapter
 import com.im.dairyinventorymanagement.presentation.utils.GridSpacingItemDecoration
+import com.im.dairyinventorymanagement.presentation.viewmodel.HostViewModel
 import com.im.dairyinventorymanagement.utils.SharedPreferencesHandler
+import com.im.dairyinventorymanagement.utils.SharedPreferencesHandler.Companion.LOGIN_DETAILS
 import com.saadahmedev.popupdialog.PopupDialog
 import com.saadahmedev.popupdialog.listener.StandardDialogActionListener
+import com.shubham.newsapiclientproject.data.util.Resource
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -43,6 +51,12 @@ class DashboardFragment : Fragment() {
 
     private lateinit var binding: FragmentDashboardBinding
 
+    lateinit var sharedPrefsHandler: SharedPreferencesHandler
+
+    private val viewModel: HostViewModel by activityViewModels()
+
+    private lateinit var dialog: PopupDialog
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,8 +68,11 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentDashboardBinding.bind(view)
 
+        sharedPrefsHandler = (activity as HostActivity).sharedPrefsHandler
+        dialog = PopupDialog.getInstance(context)
+
         setupClickListeners()
-        setupAdapter()
+        fetchModulesList()
     }
 
     private fun setupClickListeners() {
@@ -68,88 +85,41 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private fun setupAdapter() {
-        modulesListAdapter = ModulesListAdapter()
+    private fun fetchModulesList() {
+        (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, ""), LoginResponseData::class.java))?.let {
+            viewModel.getModulesList(it.data.token, it.data.user.id)
+        }
 
-        val list = listOf(
-            ModuleData(
-                id = 1,
-                title = "Admin & Legal",
-                description = "Manage your admin & legal operations",
-                image = R.drawable.ic_admin,
-                backgroundColor = R.color.item_yellow,
-                navigationActionRouteName = "SwamiDairy/Sales"
-            ),
-            ModuleData(
-                id = 1,
-                title = "Master",
-                description = "Maintain your master",
-                image = R.drawable.ic_master,
-                backgroundColor = R.color.ripple,
-                navigationActionRouteName = "SwamiDairy/Maintain"
-            ),
-            ModuleData(
-                id = 1,
-                title = "Sales & Distribution",
-                description = "Manage Sales & Distributions across your business",
-                image = R.drawable.ic_sales_and_distribution,
-                backgroundColor = R.color.blue,
-                navigationActionRouteName = "SwamiDairy/Distributions"
-            ),
-            ModuleData(
-                id = 1,
-                title = "Purchase Procurement",
-                description = "Manage Purchase & Procurements.",
-                image = R.drawable.ic_purchase_procurement,
-                backgroundColor = R.color.green,
-                navigationActionRouteName = "SwamiDairy/Procurements"
-            ),
-            ModuleData(
-                id = 1,
-                title = "Production & Planning",
-                description = "Maintain your Production and Planning",
-                image = R.drawable.ic_production_and_planning,
-                backgroundColor = R.color.purple,
-                navigationActionRouteName = "SwamiDairy/Maintain"
-            ),
-            ModuleData(
-                id = 1,
-                title = "Quality Management",
-                description = "Check your Quality Management practices",
-                image = R.drawable.ic_quality,
-                backgroundColor = R.color.color1,
-                navigationActionRouteName = "SwamiDairy/Quality"
-            ),
-            ModuleData(
-                id = 1,
-                title = "Material Management",
-                description = "Manage your material",
-                image = R.drawable.ic_material_management,
-                backgroundColor = R.color.orange_shade,
-                navigationActionRouteName = "SwamiDairy/Material"
-            ),
-            ModuleData(
-                id = 1,
-                title = "Maintenance",
-                description = "Manage Maintenance",
-                image = R.drawable.ic_maintenance,
-                backgroundColor = R.color.blue2,
-                navigationActionRouteName = "SwamiDairy/Maintenance"
-            ),
-            ModuleData(
-                id = 1,
-                title = "HR Management",
-                description = "Manage your Human Resources",
-                image = R.drawable.ic_hr_management,
-                backgroundColor = R.color.primary,
-                navigationActionRouteName = "SwamiDairy/Resources"
-            )
-        )
+        viewModel.modulesList.distinctUntilChanged().observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Error -> {
+                    binding.dimmingOverlay.visibility = View.GONE
+                    showErrorLayout()
+                }
+
+                is Resource.Loading -> {
+                    binding.dimmingOverlay.visibility = View.VISIBLE
+                }
+
+                is Resource.Success -> {
+                    binding.dimmingOverlay.visibility = View.GONE
+                    if (it.data?.first()?.status?.lowercase() != "success") {
+                        showErrorLayout()
+                    } else {
+                        it.data.first().data
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupAdapter(list: List<Module>) {
+        modulesListAdapter = ModulesListAdapter()
 
         modulesListAdapter?.apply {
             differ.submitList(list)
             setItemClickCallback { moduleData ->
-//                findNavController().navigate(moduleData.navigationActionRouteName)
+                // findNavController().navigate(moduleData.navigationActionRouteName)
                 ModulesData.getAction(moduleData.navigationActionRouteName)?.let { findNavController().navigate(it) } ?: run {
                     PopupDialog.getInstance(context)
                         .statusDialogBuilder()
@@ -166,9 +136,16 @@ class DashboardFragment : Fragment() {
             adapter = modulesListAdapter
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(GridSpacingItemDecoration(23, 23))
-//            val animation = AnimationUtils.loadLayoutAnimation(context, R.anim.item_anim_fall_down)
-//            layoutAnimation = animation
-//            scheduleLayoutAnimation()
+        }
+    }
+
+    private fun showErrorLayout() {
+        binding.errorLayout.apply {
+            failedToLoadDataLayout.visibility = View.VISIBLE
+            errorTv.text = getString(R.string.something_went_wrong)
+            retryButton.setOnClickListener {
+                fetchModulesList()
+            }
         }
     }
 
@@ -176,8 +153,8 @@ class DashboardFragment : Fragment() {
         PopupDialog.getInstance(context)
             .standardDialogBuilder()
             .createAlertDialog()
-            .setHeading("Logout")
-            .setDescription("Are you sure you want to logout?")
+            .setHeading(getString(R.string.logout))
+            .setDescription(getString(R.string.logout_question))
             .build(object : StandardDialogActionListener {
                 override fun onNegativeButtonClicked(dialog: Dialog?) {
                     dialog?.dismiss()

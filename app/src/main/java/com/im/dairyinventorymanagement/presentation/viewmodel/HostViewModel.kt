@@ -10,7 +10,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.im.dairyinventorymanagement.data.model.request.LoginRequestData
+import com.im.dairyinventorymanagement.data.model.request.ModulesRequestData
 import com.im.dairyinventorymanagement.data.model.response.LoginResponseData
+import com.im.dairyinventorymanagement.data.model.response.ModulesResponseData
+import com.im.dairyinventorymanagement.domain.usecase.ModulesManagementUseCase
 import com.im.dairyinventorymanagement.domain.usecase.UserManagementUseCase
 import com.shubham.newsapiclientproject.data.util.Resource
 import kotlinx.coroutines.Dispatchers
@@ -18,15 +21,18 @@ import kotlinx.coroutines.launch
 
 class HostViewModel(
     private val application: Application,
-    private val userManagementUseCase: UserManagementUseCase
+    private val userManagementUseCase: UserManagementUseCase,
+    private val modulesManagementUseCase: ModulesManagementUseCase
 ): AndroidViewModel(application) {
 
     private val _loginDetails = MutableLiveData<Resource<List<LoginResponseData>>>()
     val loginDetails: LiveData<Resource<List<LoginResponseData>>> = _loginDetails
 
+    private val _modulesList = MutableLiveData<Resource<List<ModulesResponseData>>>()
+    val modulesList: LiveData<Resource<List<ModulesResponseData>>> = _modulesList
+
     fun loginUser(username: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
         _loginDetails.postValue(Resource.Loading())
-
         try {
             if (isNetworkAvailable(application)) {
                 val loginResult = userManagementUseCase.loginUser(LoginRequestData(username, password))
@@ -37,7 +43,20 @@ class HostViewModel(
         } catch (e: Exception) {
             _loginDetails.postValue(Resource.Error(e.message.toString()))
         }
+    }
 
+    fun getModulesList(authToken: String, userId: String) = viewModelScope.launch(Dispatchers.IO) {
+        _modulesList.postValue(Resource.Loading())
+        try {
+            if (isNetworkAvailable(application)) {
+                val modulesListResult = modulesManagementUseCase.getModulesList(ModulesRequestData(authToken, userId))
+                _modulesList.postValue(modulesListResult)
+            } else {
+                _modulesList.postValue(Resource.Error("Internet Unavailable"))
+            }
+        } catch (e: Exception) {
+            _modulesList.postValue(Resource.Error(e.message.toString()))
+        }
     }
 
     private fun isNetworkAvailable(context: Context): Boolean {

@@ -6,23 +6,23 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.im.dairyinventorymanagement.data.model.ModuleData
+import com.im.dairyinventorymanagement.data.model.response.Module
 import com.im.dairyinventorymanagement.databinding.ModuleListItemBinding
 
 class ModulesListAdapter() :
     RecyclerView.Adapter<ModulesListAdapter.ViewHolder>() {
 
-    var itemClickListener: ((ModuleData) -> Unit)? = null
+    var itemClickListener: ((Module) -> Unit)? = null
 
-    private val callback = object : DiffUtil.ItemCallback<ModuleData>() {
-        override fun areItemsTheSame(oldItem: ModuleData, newItem: ModuleData) =
+    private val callback = object : DiffUtil.ItemCallback<Module>() {
+        override fun areItemsTheSame(oldItem: Module, newItem: Module) =
             oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: ModuleData, newItem: ModuleData) =
+        override fun areContentsTheSame(oldItem: Module, newItem: Module) =
             oldItem.id == newItem.id
     }
 
-    fun setItemClickCallback(itemClickListener: ((ModuleData) -> Unit)?) {
+    fun setItemClickCallback(itemClickListener: ((Module) -> Unit)?) {
         this.itemClickListener = itemClickListener
     }
 
@@ -47,15 +47,15 @@ class ModulesListAdapter() :
     inner class ViewHolder(private val binding: ModuleListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: ModuleData) {
+        fun bind(data: Module) {
             binding.apply {
-                moduleCard.setCardBackgroundColor(binding.root.context.getColor(data.backgroundColor))
-                imageCard.setCardBackgroundColor(binding.root.context.getColor(data.backgroundColor))
+//                moduleCard.setCardBackgroundColor(binding.root.context.getColor(data.backgroundColor))
+//                imageCard.setCardBackgroundColor(binding.root.context.getColor(data.backgroundColor))
                 title.text = data.title
                 description.text = data.description
             }
 
-            Glide.with(binding.moduleImage.context).load(data.image).into(binding.moduleImage)
+            Glide.with(binding.moduleImage.context).load(data.imageUrl).into(binding.moduleImage)
 
             binding.moduleCard.setOnClickListener {
                 itemClickListener?.let {

@@ -1,3 +1,3 @@
 package com.im.dairyinventorymanagement.data.model.request
 
-data class ModulesRequestData(val userId: String, val sessionId: String)
+data class ModulesRequestData(val authToken: String, val userId: String)

@@ -107,6 +107,24 @@
 
         </ScrollView>
 
+        <include
+            android:id="@+id/dimming_overlay"
+            layout="@layout/loader_progress_dimming_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <include
+            layout="@layout/loading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <include
+            android:id="@+id/error_layout"
+            layout="@layout/error_failed_to_load_layout_without_swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

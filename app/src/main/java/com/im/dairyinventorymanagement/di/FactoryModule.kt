@@ -1,6 +1,7 @@
 package com.im.dairyinventorymanagement.di
 
 import android.app.Application
+import com.im.dairyinventorymanagement.domain.usecase.ModulesManagementUseCase
 import com.im.dairyinventorymanagement.domain.usecase.UserManagementUseCase
 import com.im.dairyinventorymanagement.presentation.viewmodel.HostViewModelFactory
 import dagger.Module
@@ -17,11 +18,13 @@ class FactoryModule {
     @Provides
     fun providesHostViewModelFactory(
         application: Application,
-        userManagementUseCase: UserManagementUseCase
+        userManagementUseCase: UserManagementUseCase,
+        modulesManagementUseCase: ModulesManagementUseCase
     ): HostViewModelFactory {
         return HostViewModelFactory(
             application,
-            userManagementUseCase
+            userManagementUseCase,
+            modulesManagementUseCase
         )
     }
 }
