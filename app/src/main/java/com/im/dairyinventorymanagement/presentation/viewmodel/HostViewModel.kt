@@ -59,6 +59,34 @@ class HostViewModel(
         }
     }
 
+    fun getSubModulesList(authToken: String, userId: String, moduleId: String) = viewModelScope.launch(Dispatchers.IO) {
+        _modulesList.postValue(Resource.Loading())
+        try {
+            if (isNetworkAvailable(application)) {
+                val modulesListResult = modulesManagementUseCase.getSubModulesList(ModulesRequestData(authToken, userId, moduleId))
+                _modulesList.postValue(modulesListResult)
+            } else {
+                _modulesList.postValue(Resource.Error("Internet Unavailable"))
+            }
+        } catch (e: Exception) {
+            _modulesList.postValue(Resource.Error(e.message.toString()))
+        }
+    }
+
+    fun getMenuList(authToken: String, userId: String, moduleId: String, subModuleId: String) = viewModelScope.launch(Dispatchers.IO) {
+        _modulesList.postValue(Resource.Loading())
+        try {
+            if (isNetworkAvailable(application)) {
+                val modulesListResult = modulesManagementUseCase.getMenuList(ModulesRequestData(authToken, userId, moduleId, subModuleId))
+                _modulesList.postValue(modulesListResult)
+            } else {
+                _modulesList.postValue(Resource.Error("Internet Unavailable"))
+            }
+        } catch (e: Exception) {
+            _modulesList.postValue(Resource.Error(e.message.toString()))
+        }
+    }
+
     private fun isNetworkAvailable(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

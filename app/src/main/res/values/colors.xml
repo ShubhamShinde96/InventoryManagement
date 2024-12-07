@@ -56,4 +56,8 @@
     <color name="blue2">#1287A5</color>
     <color name="orange_shade">#EA7773</color>
     <color name="color1">#AF9F84</color>
+
+
+    <color name="backgroundColorDark">#39393C</color>
+<!--    <color name="color1">#39393C</color>-->
 </resources>

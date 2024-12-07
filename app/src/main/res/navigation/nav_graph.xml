@@ -14,13 +14,45 @@
             android:id="@+id/action_dashboardFragment_to_salesFragment"
             app:destination="@id/salesFragment"
             app:popUpTo="@id/dashboardFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_subModulesFragment"
+            app:destination="@id/subModulesFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/salesFragment"
         android:name="com.im.dairyinventorymanagement.presentation.screens.SalesFragment"
         android:label="fragment_sales"
-        tools:layout="@layout/fragment_sales" />
+        tools:layout="@layout/fragment_sales" >
+    </fragment>
+    <fragment
+        android:id="@+id/subModulesFragment"
+        android:name="com.im.dairyinventorymanagement.presentation.screens.SubModulesFragment"
+        android:label="SubModulesFragment" >
+        <argument
+            android:name="screenTitle"
+            app:argType="string" />
+        <argument
+            android:name="moduleId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_subModulesFragment_to_menuListFragment"
+            app:destination="@id/menuListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/menuListFragment"
+        android:name="com.im.dairyinventorymanagement.presentation.screens.MenuListFragment"
+        android:label="MenuListFragment" >
+        <argument
+            android:name="screenTitle"
+            app:argType="string" />
+        <argument
+            android:name="moduleId"
+            app:argType="string" />
+        <argument
+            android:name="subModuleId"
+            app:argType="string" />
+    </fragment>
 
     <!--<fragment
         android:id="@+id/loginFragment"

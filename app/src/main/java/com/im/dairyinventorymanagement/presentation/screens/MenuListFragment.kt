@@ -2,10 +2,10 @@ package com.im.dairyinventorymanagement.presentation.screens
 
 import android.app.Dialog
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.fragment.findNavController
@@ -16,7 +16,7 @@ import com.im.dairyinventorymanagement.R
 import com.im.dairyinventorymanagement.data.model.response.LoginResponseData
 import com.im.dairyinventorymanagement.data.model.response.Module
 import com.im.dairyinventorymanagement.data.repository.ModulesData
-import com.im.dairyinventorymanagement.databinding.FragmentDashboardBinding
+import com.im.dairyinventorymanagement.databinding.FragmentMenuListBinding
 import com.im.dairyinventorymanagement.presentation.adapter.ModulesListAdapter
 import com.im.dairyinventorymanagement.presentation.utils.GridSpacingItemDecoration
 import com.im.dairyinventorymanagement.presentation.viewmodel.HostViewModel
@@ -27,30 +27,25 @@ import com.saadahmedev.popupdialog.PopupDialog
 import com.saadahmedev.popupdialog.listener.StandardDialogActionListener
 import com.shubham.newsapiclientproject.data.util.Resource
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val MODULE_ID = "moduleId"
+private const val SUB_MODULE_ID = "subModuleId"
+private const val MENU_LIST_SCREEN_TITLE = "screenTitle"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [DashboardFragment.newInstance] factory method to
+ * Use the [MenuListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DashboardFragment : Fragment() {
+class MenuListFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
-    private var modulesListAdapter: ModulesListAdapter? = null
+    private var subModulesListAdapter: ModulesListAdapter? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
-    private lateinit var binding: FragmentDashboardBinding
+    private lateinit var binding: FragmentMenuListBinding
 
     lateinit var sharedPrefsHandler: SharedPreferencesHandler
 
@@ -58,22 +53,35 @@ class DashboardFragment : Fragment() {
 
     private lateinit var dialog: PopupDialog
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            param1 = it.getString(MODULE_ID)
+            param2 = it.getString(SUB_MODULE_ID)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+        return inflater.inflate(R.layout.fragment_menu_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = FragmentDashboardBinding.bind(view)
+        binding = FragmentMenuListBinding.bind(view)
 
         sharedPrefsHandler = (activity as HostActivity).sharedPrefsHandler
         dialog = PopupDialog.getInstance(context)
 
+        initViews()
         setupClickListeners()
-        fetchModulesList()
+        fetchMenuList()
+    }
+
+    private fun initViews() {
+        binding.menuListToolbarTitle.text = arguments?.getString(MENU_LIST_SCREEN_TITLE).orEmpty()
     }
 
     private fun setupClickListeners() {
@@ -86,10 +94,13 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private fun fetchModulesList() {
+    private fun fetchMenuList() {
         (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, ""), LoginResponseData::class.java))?.let {
-            hideErrorLayout()
-            viewModel.getModulesList(it.data.token, it.data.user.id)
+            arguments?.apply {
+                hideErrorLayout()
+                viewModel.getMenuList(it.data.token, it.data.user.id, getString(
+                    MODULE_ID).orEmpty(), getString(SUB_MODULE_ID).orEmpty())
+            }
         }
 
         viewModel.modulesList.distinctUntilChanged().observe(viewLifecycleOwner) {
@@ -116,21 +127,11 @@ class DashboardFragment : Fragment() {
     }
 
     private fun initializeAdapter(list: List<Module>) {
-        modulesListAdapter = ModulesListAdapter()
+        subModulesListAdapter = ModulesListAdapter()
 
-        modulesListAdapter?.apply {
+        subModulesListAdapter?.apply {
             differ.submitList(list)
             setItemClickCallback { moduleData ->
-
-                if (moduleData.navigationActionRouteName == SUB_MODULE_IDENTIFIER) {
-                    findNavController().navigate(
-                        DashboardFragmentDirections.actionDashboardFragmentToSubModulesFragment(
-                            moduleData.title,
-                            moduleData.id
-                        )
-                    )
-                    return@setItemClickCallback
-                }
                 // findNavController().navigate(moduleData.navigationActionRouteName)
                 ModulesData.getAction(moduleData.navigationActionRouteName)?.let { findNavController().navigate(it) } ?: run {
                     PopupDialog.getInstance(context)
@@ -145,7 +146,7 @@ class DashboardFragment : Fragment() {
         }
 
         binding.recyclerView.apply {
-            adapter = modulesListAdapter
+            adapter = subModulesListAdapter
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(GridSpacingItemDecoration(23, 23))
         }
@@ -156,7 +157,7 @@ class DashboardFragment : Fragment() {
             failedToLoadDataLayout.visibility = View.VISIBLE
             errorTv.text = getString(R.string.something_went_wrong)
             retryButton.setOnClickListener {
-                fetchModulesList()
+                fetchMenuList()
             }
         }
     }
@@ -167,7 +168,7 @@ class DashboardFragment : Fragment() {
                 failedToLoadDataLayout.visibility = View.GONE
                 errorTv.text = EMPTY_STRING
                 retryButton.setOnClickListener {
-                    fetchModulesList()
+                    fetchMenuList()
                 }
             }
         }
@@ -195,23 +196,21 @@ class DashboardFragment : Fragment() {
     }
 
     companion object {
-        const val SUB_MODULE_IDENTIFIER = "SwamiDairy/SubModules"
-
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment DashboardFragment.
+         * @return A new instance of fragment MenuListFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            DashboardFragment().apply {
+            MenuListFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putString(MODULE_ID, param1)
+                    putString(SUB_MODULE_ID, param2)
                 }
             }
     }

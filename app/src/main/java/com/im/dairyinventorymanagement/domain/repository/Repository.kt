@@ -11,4 +11,8 @@ interface Repository {
     suspend fun loginUser(loginRequestData: LoginRequestData): Resource<List<LoginResponseData>>
 
     suspend fun getModulesList(modulesRequestData: ModulesRequestData): Resource<List<ModulesResponseData>>
+
+    suspend fun getSubModulesList(modulesRequestData: ModulesRequestData): Resource<List<ModulesResponseData>>
+
+    suspend fun getMenuList(modulesRequestData: ModulesRequestData): Resource<List<ModulesResponseData>>
 }

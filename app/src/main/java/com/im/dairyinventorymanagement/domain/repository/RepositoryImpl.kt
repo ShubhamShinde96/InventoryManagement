@@ -19,6 +19,14 @@ class RepositoryImpl(private val apiService: ApiService) : Repository {
         return responseToResource(apiService.getModulesList(modulesRequestData))
     }
 
+    override suspend fun getSubModulesList(modulesRequestData: ModulesRequestData): Resource<List<ModulesResponseData>> {
+        return responseToResource(apiService.getSubModulesList(modulesRequestData))
+    }
+
+    override suspend fun getMenuList(modulesRequestData: ModulesRequestData): Resource<List<ModulesResponseData>> {
+        return responseToResource(apiService.getMenuList(modulesRequestData))
+    }
+
     private inline fun <reified T> responseToResource(response: Response<T>): Resource<T> {
         return if (response.isSuccessful) {
             response.body()?.let { Resource.Success(it) } ?: Resource.Error("Response body is null")

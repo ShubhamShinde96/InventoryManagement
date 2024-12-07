@@ -15,4 +15,10 @@ interface ApiService {
 
     @POST("getModule.php")
     suspend fun getModulesList(@Body request: ModulesRequestData): Response<List<ModulesResponseData>>
+
+    @POST("getSubModule.php")
+    suspend fun getSubModulesList(@Body request: ModulesRequestData): Response<List<ModulesResponseData>>
+
+    @POST("getMenuList.php")
+    suspend fun getMenuList(@Body request: ModulesRequestData): Response<List<ModulesResponseData>>
 }

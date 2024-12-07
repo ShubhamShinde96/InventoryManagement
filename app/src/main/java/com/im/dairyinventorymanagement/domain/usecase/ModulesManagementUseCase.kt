@@ -10,4 +10,12 @@ class ModulesManagementUseCase(private val repository: Repository) {
     suspend fun getModulesList(modulesRequestData: ModulesRequestData): Resource<List<ModulesResponseData>> {
         return repository.getModulesList(modulesRequestData)
     }
+
+    suspend fun getSubModulesList(modulesRequestData: ModulesRequestData): Resource<List<ModulesResponseData>> {
+        return repository.getSubModulesList(modulesRequestData)
+    }
+
+    suspend fun getMenuList(modulesRequestData: ModulesRequestData): Resource<List<ModulesResponseData>> {
+        return repository.getMenuList(modulesRequestData)
+    }
 }
