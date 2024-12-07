@@ -53,7 +53,7 @@ class SubModulesFragment : Fragment() {
 
     private lateinit var dialog: PopupDialog
 
-    private var moduleId: String = ""
+    private var moduleId: String = EMPTY_STRING
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,7 +98,7 @@ class SubModulesFragment : Fragment() {
     }
 
     private fun fetchSubModulesList() {
-        (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, ""), LoginResponseData::class.java))?.let {
+        (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, EMPTY_STRING), LoginResponseData::class.java))?.let {
             hideErrorLayout()
             viewModel.getSubModulesList(it.data.token, it.data.user.id, moduleId)
         }

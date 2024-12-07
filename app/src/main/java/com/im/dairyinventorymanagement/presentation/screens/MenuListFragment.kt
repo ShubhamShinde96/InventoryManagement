@@ -95,7 +95,7 @@ class MenuListFragment : Fragment() {
     }
 
     private fun fetchMenuList() {
-        (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, ""), LoginResponseData::class.java))?.let {
+        (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, EMPTY_STRING), LoginResponseData::class.java))?.let {
             arguments?.apply {
                 hideErrorLayout()
                 viewModel.getMenuList(it.data.token, it.data.user.id, getString(

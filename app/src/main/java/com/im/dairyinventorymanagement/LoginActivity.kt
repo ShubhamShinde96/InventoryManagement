@@ -13,6 +13,7 @@ import com.im.dairyinventorymanagement.data.model.response.LoginResponseData
 import com.im.dairyinventorymanagement.databinding.ActivityLoginBinding
 import com.im.dairyinventorymanagement.presentation.viewmodel.HostViewModel
 import com.im.dairyinventorymanagement.presentation.viewmodel.HostViewModelFactory
+import com.im.dairyinventorymanagement.utils.EMPTY_STRING
 import com.im.dairyinventorymanagement.utils.SharedPreferencesHandler
 import com.im.dairyinventorymanagement.utils.SharedPreferencesHandler.Companion.LOGIN_DETAILS
 import com.saadahmedev.popupdialog.PopupDialog
@@ -49,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
 
         dialog = PopupDialog.getInstance(this)
 
-        (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, ""), LoginResponseData::class.java))?.let {
+        (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, EMPTY_STRING), LoginResponseData::class.java))?.let {
             startActivity(Intent(this, HostActivity::class.java))
         }
 

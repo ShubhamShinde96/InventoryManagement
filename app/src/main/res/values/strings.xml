@@ -130,7 +130,6 @@
     <string name="sign_up">Sign Up</string>
     <string name="swami_dairy">Swami Dairy</string>
     <string name="swami_dairy_image">Swami Dairy Image</string>
-    <string name="suopsbmit">Submit</string>
+    <string name="submit">Submit</string>
     <string name="feature_not_available_at_this_moment">Seems like this feature is not available at this moment. Please contact your service provider.</string>
-
 </resources>

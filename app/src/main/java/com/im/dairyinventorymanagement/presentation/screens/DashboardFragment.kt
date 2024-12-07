@@ -87,7 +87,7 @@ class DashboardFragment : Fragment() {
     }
 
     private fun fetchModulesList() {
-        (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, ""), LoginResponseData::class.java))?.let {
+        (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, EMPTY_STRING), LoginResponseData::class.java))?.let {
             hideErrorLayout()
             viewModel.getModulesList(it.data.token, it.data.user.id)
         }
