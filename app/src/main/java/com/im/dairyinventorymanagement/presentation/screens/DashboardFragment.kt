@@ -121,13 +121,15 @@ class DashboardFragment : Fragment() {
     }
 
     private fun initializeAdapter(list: List<Module>, isRetryAttempt: Boolean = false) {
-        modulesListAdapter?.apply { if(isRetryAttempt) differ.submitList(list) }
+        if(isRetryAttempt) {
+            modulesListAdapter?.differ?.submitList(list)
+            return
+        }
 
         modulesListAdapter = ModulesListAdapter()
         modulesListAdapter?.apply {
             differ.submitList(list)
             setItemClickCallback { moduleData ->
-
                 if (moduleData.navigationActionRouteName == SUB_MODULE_IDENTIFIER) {
                     findNavController().navigate(
                         DashboardFragmentDirections.actionDashboardFragmentToSubModulesFragment(

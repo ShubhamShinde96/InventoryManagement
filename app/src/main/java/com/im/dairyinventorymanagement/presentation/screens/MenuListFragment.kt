@@ -43,7 +43,7 @@ class MenuListFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private var subModulesListAdapter: ModulesListAdapter? = null
+    private var menuListAdapter: ModulesListAdapter? = null
 
     private lateinit var binding: FragmentMenuListBinding
 
@@ -131,10 +131,13 @@ class MenuListFragment : Fragment() {
     }
 
     private fun initializeAdapter(list: List<Module>, isRetryAttempt: Boolean = false) {
-        subModulesListAdapter?.apply { if(isRetryAttempt) differ.submitList(list) }
+        if(isRetryAttempt) {
+            menuListAdapter?.differ?.submitList(list)
+            return
+        }
 
-        subModulesListAdapter = ModulesListAdapter()
-        subModulesListAdapter?.apply {
+        menuListAdapter = ModulesListAdapter()
+        menuListAdapter?.apply {
             differ.submitList(list)
             setItemClickCallback { moduleData ->
                 // findNavController().navigate(moduleData.navigationActionRouteName)
@@ -151,7 +154,7 @@ class MenuListFragment : Fragment() {
         }
 
         binding.recyclerView.apply {
-            adapter = subModulesListAdapter
+            adapter = menuListAdapter
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(GridSpacingItemDecoration(23, 23))
         }

@@ -131,7 +131,10 @@ class SubModulesFragment : Fragment() {
     }
 
     private fun initializeAdapter(list: List<Module>, isRetryAttempt: Boolean = false) {
-        subModulesListAdapter?.apply { if(isRetryAttempt) differ.submitList(list) }
+        if(isRetryAttempt) {
+            subModulesListAdapter?.differ?.submitList(list)
+            return
+        }
 
         subModulesListAdapter = ModulesListAdapter()
         subModulesListAdapter?.apply {
