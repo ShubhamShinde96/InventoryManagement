@@ -80,7 +80,7 @@ class SubModulesFragment : Fragment() {
 
         initViews()
         setupClickListeners()
-        fetchSubModulesList()
+        if (viewModel.subModulesList.value?.data.isNullOrEmpty()) fetchSubModulesList() else observeList()
     }
 
     private fun initViews() {
@@ -97,13 +97,17 @@ class SubModulesFragment : Fragment() {
         }
     }
 
-    private fun fetchSubModulesList() {
+    private fun fetchSubModulesList(isRetryAttempt: Boolean = false) {
         (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, EMPTY_STRING), LoginResponseData::class.java))?.let {
             hideErrorLayout()
             viewModel.getSubModulesList(it.data.token, it.data.user.id, moduleId)
         }
 
-        viewModel.modulesList.distinctUntilChanged().observe(viewLifecycleOwner) {
+        observeList(isRetryAttempt)
+    }
+
+    private fun observeList(isRetryAttempt: Boolean = false) {
+        viewModel.subModulesList.distinctUntilChanged().observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Error -> {
                     binding.dimmingOverlay.visibility = View.GONE
@@ -117,7 +121,7 @@ class SubModulesFragment : Fragment() {
                 is Resource.Success -> {
                     binding.dimmingOverlay.visibility = View.GONE
                     if (it.data?.first()?.status?.lowercase() == "success") {
-                        initializeAdapter(it.data.first().data)
+                        initializeAdapter(it.data.first().data, isRetryAttempt = isRetryAttempt)
                     } else {
                         showErrorLayout()
                     }
@@ -126,9 +130,10 @@ class SubModulesFragment : Fragment() {
         }
     }
 
-    private fun initializeAdapter(list: List<Module>) {
-        subModulesListAdapter = ModulesListAdapter()
+    private fun initializeAdapter(list: List<Module>, isRetryAttempt: Boolean = false) {
+        subModulesListAdapter?.apply { if(isRetryAttempt) differ.submitList(list) }
 
+        subModulesListAdapter = ModulesListAdapter()
         subModulesListAdapter?.apply {
             differ.submitList(list)
             setItemClickCallback { moduleData ->
@@ -167,7 +172,7 @@ class SubModulesFragment : Fragment() {
             failedToLoadDataLayout.visibility = View.VISIBLE
             errorTv.text = getString(R.string.something_went_wrong)
             retryButton.setOnClickListener {
-                fetchSubModulesList()
+                fetchSubModulesList(isRetryAttempt = true)
             }
         }
     }
@@ -177,9 +182,6 @@ class SubModulesFragment : Fragment() {
             if (isVisible) {
                 failedToLoadDataLayout.visibility = View.GONE
                 errorTv.text = EMPTY_STRING
-                retryButton.setOnClickListener {
-                    fetchSubModulesList()
-                }
             }
         }
     }

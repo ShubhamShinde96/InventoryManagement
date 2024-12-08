@@ -73,7 +73,8 @@ class DashboardFragment : Fragment() {
         dialog = PopupDialog.getInstance(context)
 
         setupClickListeners()
-        fetchModulesList()
+
+        if (viewModel.modulesList.value?.data.isNullOrEmpty()) fetchModulesList() else observeList()
     }
 
     private fun setupClickListeners() {
@@ -86,12 +87,16 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private fun fetchModulesList() {
+    private fun fetchModulesList(isRetryAttempt: Boolean = false) {
         (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, EMPTY_STRING), LoginResponseData::class.java))?.let {
             hideErrorLayout()
             viewModel.getModulesList(it.data.token, it.data.user.id)
         }
 
+        observeList(isRetryAttempt)
+    }
+
+    private fun observeList(isRetryAttempt: Boolean = false) {
         viewModel.modulesList.distinctUntilChanged().observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Error -> {
@@ -106,7 +111,7 @@ class DashboardFragment : Fragment() {
                 is Resource.Success -> {
                     binding.dimmingOverlay.visibility = View.GONE
                     if (it.data?.first()?.status?.lowercase() == "success") {
-                        initializeAdapter(it.data.first().data)
+                        initializeAdapter(it.data.first().data, isRetryAttempt = isRetryAttempt)
                     } else {
                         showErrorLayout()
                     }
@@ -115,9 +120,10 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private fun initializeAdapter(list: List<Module>) {
-        modulesListAdapter = ModulesListAdapter()
+    private fun initializeAdapter(list: List<Module>, isRetryAttempt: Boolean = false) {
+        modulesListAdapter?.apply { if(isRetryAttempt) differ.submitList(list) }
 
+        modulesListAdapter = ModulesListAdapter()
         modulesListAdapter?.apply {
             differ.submitList(list)
             setItemClickCallback { moduleData ->
@@ -156,7 +162,7 @@ class DashboardFragment : Fragment() {
             failedToLoadDataLayout.visibility = View.VISIBLE
             errorTv.text = getString(R.string.something_went_wrong)
             retryButton.setOnClickListener {
-                fetchModulesList()
+                fetchModulesList(isRetryAttempt = true)
             }
         }
     }
@@ -166,9 +172,6 @@ class DashboardFragment : Fragment() {
             if (isVisible) {
                 failedToLoadDataLayout.visibility = View.GONE
                 errorTv.text = EMPTY_STRING
-                retryButton.setOnClickListener {
-                    fetchModulesList()
-                }
             }
         }
     }

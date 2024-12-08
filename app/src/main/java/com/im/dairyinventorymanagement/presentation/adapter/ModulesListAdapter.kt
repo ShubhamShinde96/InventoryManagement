@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.im.dairyinventorymanagement.R
 import com.im.dairyinventorymanagement.data.model.response.Module
 import com.im.dairyinventorymanagement.databinding.ModuleListItemBinding
 
@@ -55,7 +56,10 @@ class ModulesListAdapter() :
                 description.text = data.description
             }
 
-            Glide.with(binding.moduleImage.context).load(data.imageUrl).into(binding.moduleImage)
+            Glide.with(binding.moduleImage.context)
+                .load(data.imageUrl)
+                .placeholder(R.drawable.ic_placeholder)
+                .into(binding.moduleImage)
 
             binding.moduleCard.setOnClickListener {
                 itemClickListener?.let {

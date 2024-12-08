@@ -124,7 +124,8 @@
             android:id="@+id/error_layout"
             layout="@layout/error_failed_to_load_layout_without_swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/appbar_layout"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

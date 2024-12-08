@@ -31,6 +31,12 @@ class HostViewModel(
     private val _modulesList = MutableLiveData<Resource<List<ModulesResponseData>>>()
     val modulesList: LiveData<Resource<List<ModulesResponseData>>> = _modulesList
 
+    private val _subModulesList = MutableLiveData<Resource<List<ModulesResponseData>>>()
+    val subModulesList: LiveData<Resource<List<ModulesResponseData>>> = _subModulesList
+
+    private val _menuList = MutableLiveData<Resource<List<ModulesResponseData>>>()
+    val menuList: LiveData<Resource<List<ModulesResponseData>>> = _menuList
+
     fun loginUser(username: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
         _loginDetails.postValue(Resource.Loading())
         try {
@@ -60,30 +66,30 @@ class HostViewModel(
     }
 
     fun getSubModulesList(authToken: String, userId: String, moduleId: String) = viewModelScope.launch(Dispatchers.IO) {
-        _modulesList.postValue(Resource.Loading())
+        _subModulesList.postValue(Resource.Loading())
         try {
             if (isNetworkAvailable(application)) {
                 val modulesListResult = modulesManagementUseCase.getSubModulesList(ModulesRequestData(authToken, userId, moduleId))
-                _modulesList.postValue(modulesListResult)
+                _subModulesList.postValue(modulesListResult)
             } else {
-                _modulesList.postValue(Resource.Error("Internet Unavailable"))
+                _subModulesList.postValue(Resource.Error("Internet Unavailable"))
             }
         } catch (e: Exception) {
-            _modulesList.postValue(Resource.Error(e.message.toString()))
+            _subModulesList.postValue(Resource.Error(e.message.toString()))
         }
     }
 
     fun getMenuList(authToken: String, userId: String, moduleId: String, subModuleId: String) = viewModelScope.launch(Dispatchers.IO) {
-        _modulesList.postValue(Resource.Loading())
+        _menuList.postValue(Resource.Loading())
         try {
             if (isNetworkAvailable(application)) {
                 val modulesListResult = modulesManagementUseCase.getMenuList(ModulesRequestData(authToken, userId, moduleId, subModuleId))
-                _modulesList.postValue(modulesListResult)
+                _menuList.postValue(modulesListResult)
             } else {
-                _modulesList.postValue(Resource.Error("Internet Unavailable"))
+                _menuList.postValue(Resource.Error("Internet Unavailable"))
             }
         } catch (e: Exception) {
-            _modulesList.postValue(Resource.Error(e.message.toString()))
+            _menuList.postValue(Resource.Error(e.message.toString()))
         }
     }
 

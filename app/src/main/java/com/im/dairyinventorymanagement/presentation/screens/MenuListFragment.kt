@@ -77,7 +77,7 @@ class MenuListFragment : Fragment() {
 
         initViews()
         setupClickListeners()
-        fetchMenuList()
+        if (viewModel.menuList.value?.data.isNullOrEmpty()) fetchMenuList() else observeList()
     }
 
     private fun initViews() {
@@ -94,7 +94,7 @@ class MenuListFragment : Fragment() {
         }
     }
 
-    private fun fetchMenuList() {
+    private fun fetchMenuList(isRetryAttempt: Boolean = false) {
         (Gson().fromJson(sharedPrefsHandler.getString(LOGIN_DETAILS, EMPTY_STRING), LoginResponseData::class.java))?.let {
             arguments?.apply {
                 hideErrorLayout()
@@ -103,7 +103,11 @@ class MenuListFragment : Fragment() {
             }
         }
 
-        viewModel.modulesList.distinctUntilChanged().observe(viewLifecycleOwner) {
+        observeList(isRetryAttempt)
+    }
+
+    private fun observeList(isRetryAttempt: Boolean = false) {
+        viewModel.menuList.distinctUntilChanged().observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Error -> {
                     binding.dimmingOverlay.visibility = View.GONE
@@ -117,7 +121,7 @@ class MenuListFragment : Fragment() {
                 is Resource.Success -> {
                     binding.dimmingOverlay.visibility = View.GONE
                     if (it.data?.first()?.status?.lowercase() == "success") {
-                        initializeAdapter(it.data.first().data)
+                        initializeAdapter(it.data.first().data, isRetryAttempt = isRetryAttempt)
                     } else {
                         showErrorLayout()
                     }
@@ -126,9 +130,10 @@ class MenuListFragment : Fragment() {
         }
     }
 
-    private fun initializeAdapter(list: List<Module>) {
-        subModulesListAdapter = ModulesListAdapter()
+    private fun initializeAdapter(list: List<Module>, isRetryAttempt: Boolean = false) {
+        subModulesListAdapter?.apply { if(isRetryAttempt) differ.submitList(list) }
 
+        subModulesListAdapter = ModulesListAdapter()
         subModulesListAdapter?.apply {
             differ.submitList(list)
             setItemClickCallback { moduleData ->
@@ -157,7 +162,7 @@ class MenuListFragment : Fragment() {
             failedToLoadDataLayout.visibility = View.VISIBLE
             errorTv.text = getString(R.string.something_went_wrong)
             retryButton.setOnClickListener {
-                fetchMenuList()
+                fetchMenuList(isRetryAttempt = true)
             }
         }
     }
@@ -167,9 +172,6 @@ class MenuListFragment : Fragment() {
             if (isVisible) {
                 failedToLoadDataLayout.visibility = View.GONE
                 errorTv.text = EMPTY_STRING
-                retryButton.setOnClickListener {
-                    fetchMenuList()
-                }
             }
         }
     }
