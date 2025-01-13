@@ -1,6 +1,7 @@
 package com.im.dairyinventorymanagement.presentation.screens
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.im.dairyinventorymanagement.HostActivity
+import com.im.dairyinventorymanagement.LoginActivity
 import com.im.dairyinventorymanagement.R
 import com.im.dairyinventorymanagement.data.model.response.LoginResponseData
 import com.im.dairyinventorymanagement.data.model.response.Module
@@ -178,7 +180,7 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    fun showLogoutDialog() {
+    private fun showLogoutDialog() {
         PopupDialog.getInstance(context)
             .standardDialogBuilder()
             .createAlertDialog()
@@ -192,7 +194,7 @@ class DashboardFragment : Fragment() {
                 override fun onPositiveButtonClicked(dialog: Dialog?) {
                     activity?.let {
                         SharedPreferencesHandler(it).clearSharedPreferences()
-                        it.finish()
+                        startActivity(Intent(activity, LoginActivity::class.java))
                     }
                 }
             })

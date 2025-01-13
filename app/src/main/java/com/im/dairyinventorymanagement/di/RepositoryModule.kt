@@ -13,8 +13,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class RepositoryModule {
 
-    @Singleton
     @Provides
+    @Singleton
     fun providesRepository(
         apiService: ApiService
     ): Repository {

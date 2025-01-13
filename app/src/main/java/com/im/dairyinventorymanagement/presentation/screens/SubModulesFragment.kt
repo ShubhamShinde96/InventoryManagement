@@ -1,6 +1,7 @@
 package com.im.dairyinventorymanagement.presentation.screens
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,13 +13,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.im.dairyinventorymanagement.HostActivity
+import com.im.dairyinventorymanagement.LoginActivity
 import com.im.dairyinventorymanagement.R
 import com.im.dairyinventorymanagement.data.model.response.LoginResponseData
 import com.im.dairyinventorymanagement.data.model.response.Module
 import com.im.dairyinventorymanagement.data.repository.ModulesData
 import com.im.dairyinventorymanagement.databinding.FragmentSubModulesBinding
 import com.im.dairyinventorymanagement.presentation.adapter.ModulesListAdapter
-import com.im.dairyinventorymanagement.presentation.screens.DashboardFragment.Companion
 import com.im.dairyinventorymanagement.presentation.utils.GridSpacingItemDecoration
 import com.im.dairyinventorymanagement.presentation.viewmodel.HostViewModel
 import com.im.dairyinventorymanagement.utils.EMPTY_STRING
@@ -203,7 +204,7 @@ class SubModulesFragment : Fragment() {
                 override fun onPositiveButtonClicked(dialog: Dialog?) {
                     activity?.let {
                         SharedPreferencesHandler(it).clearSharedPreferences()
-                        it.finish()
+                        startActivity(Intent(activity, LoginActivity::class.java))
                     }
                 }
             })

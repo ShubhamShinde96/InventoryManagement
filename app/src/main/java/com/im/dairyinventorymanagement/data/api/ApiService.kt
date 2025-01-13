@@ -2,8 +2,10 @@ package com.im.dairyinventorymanagement.data.api
 
 import com.im.dairyinventorymanagement.data.model.request.LoginRequestData
 import com.im.dairyinventorymanagement.data.model.request.ModulesRequestData
+import com.im.dairyinventorymanagement.data.model.request.SaveOrderRequestData
 import com.im.dairyinventorymanagement.data.model.response.LoginResponseData
 import com.im.dairyinventorymanagement.data.model.response.ModulesResponseData
+import com.im.dairyinventorymanagement.data.model.response.SaveOrderResponseData
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -21,4 +23,10 @@ interface ApiService {
 
     @POST("getMenuList.php")
     suspend fun getMenuList(@Body request: ModulesRequestData): Response<List<ModulesResponseData>>
+
+    @POST("getItemList.php")
+    suspend fun getItemList(@Body request: ModulesRequestData): Response<List<ModulesResponseData>>
+
+    @POST("OrderForm.php")
+    suspend fun saveOrder(@Body request: SaveOrderRequestData): Response<List<SaveOrderResponseData>>
 }

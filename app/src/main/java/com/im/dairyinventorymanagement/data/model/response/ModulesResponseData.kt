@@ -8,6 +8,7 @@ data class ModulesResponseData(
 data class Module(
     val id: String,
     val title: String,
+    val availableqty: Int? = null,
     val description: String,
     val imageUrl: String,
     val navigationActionRouteName: String

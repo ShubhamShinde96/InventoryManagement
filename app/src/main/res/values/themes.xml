@@ -10,4 +10,12 @@
     </style>
 
     <style name="Theme.DairyInventoryManagement" parent="Base.Theme.DairyInventoryManagement" />
+
+    <style name="MyTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/white</item>
+    </style>
+
+    <style name="CustomHintTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">@color/text_input_layout_bg_color</item>
+    </style>
 </resources>

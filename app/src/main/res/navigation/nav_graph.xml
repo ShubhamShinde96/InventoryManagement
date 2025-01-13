@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_subModulesFragment"
             app:destination="@id/subModulesFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_orderPlacementFragment"
+            app:destination="@id/orderPlacementFragment" />
     </fragment>
 
     <fragment
@@ -38,6 +41,9 @@
         <action
             android:id="@+id/action_subModulesFragment_to_menuListFragment"
             app:destination="@id/menuListFragment" />
+        <action
+            android:id="@+id/action_subModulesFragment_to_orderPlacementFragment"
+            app:destination="@id/orderPlacementFragment" />
     </fragment>
     <fragment
         android:id="@+id/menuListFragment"
@@ -52,7 +58,14 @@
         <argument
             android:name="subModuleId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_menuListFragment_to_orderPlacementFragment"
+            app:destination="@id/orderPlacementFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/orderPlacementFragment"
+        android:name="com.im.dairyinventorymanagement.presentation.screens.OrderPlacementFragment"
+        android:label="OrderPlacementFragment" />
 
     <!--<fragment
         android:id="@+id/loginFragment"

@@ -14,8 +14,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class FactoryModule {
 
-    @Singleton
     @Provides
+    @Singleton
     fun providesHostViewModelFactory(
         application: Application,
         userManagementUseCase: UserManagementUseCase,

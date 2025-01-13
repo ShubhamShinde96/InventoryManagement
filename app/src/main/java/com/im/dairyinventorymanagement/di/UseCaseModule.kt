@@ -16,16 +16,16 @@ class UseCaseModule {
     @Singleton
     @Provides
     fun providesUserManagementUseCase(
-        repositoryImpl: Repository
+        repository: Repository
     ): UserManagementUseCase {
-        return UserManagementUseCase(repositoryImpl)
+        return UserManagementUseCase(repository)
     }
 
     @Singleton
     @Provides
     fun providesModuleManagementUseCase(
-        repositoryImpl: Repository
+        repository: Repository
     ): ModulesManagementUseCase {
-        return ModulesManagementUseCase(repositoryImpl)
+        return ModulesManagementUseCase(repository)
     }
 }

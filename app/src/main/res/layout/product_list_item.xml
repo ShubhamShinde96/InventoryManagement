@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:elevation="0dp"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/purple_dark"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="0dp"
+        app:cardMaxElevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/productName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_san_semi_bold"
+                android:maxLines="1"
+                android:paddingStart="0dp"
+                android:paddingEnd="15dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Swaamy Shreekhand" />
+
+            <TextView
+                android:id="@+id/availableQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans_regular"
+                android:maxLines="1"
+                android:paddingTop="10dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/productName"
+                tools:text="Available Quantity: 284" />
+
+            <!--<TextView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="This is a test textview"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/availableQuantity" />-->
+
+            <LinearLayout
+                android:id="@+id/qtyContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/availableQuantity">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInput_fullname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxStrokeColor="@color/text_input_layout_bg_color"
+                    app:hintTextAppearance="@style/MyTextInputLayout"
+                    app:hintTextColor="@color/text_input_layout_bg_color">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/quantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:autofillHints="username"
+                        android:drawableStart="@drawable/quantity_drawable"
+                        android:drawablePadding="8dp"
+                        android:hint="@string/enter_quantity"
+                        android:inputType="textEmailAddress"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="0dp"
+                        android:textColorHint="@color/text_input_layout_bg_color"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--<TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enter_qty"
+                    android:textColor="@color/white"
+                    android:paddingBottom="@dimen/dp_5"
+                    android:paddingEnd="10dp"/>
+
+                <EditText
+                    android:id="@+id/quantity"
+                    android:layout_width="70dp"
+                    android:gravity="center"
+                    tools:text="15444"
+                    android:maxLength="5"
+                    android:maxLines="1"
+                    android:inputType="number"
+                    android:textSize="14sp"
+                    android:hint="@string/quantity"
+                    android:textColor="@color/white"
+                    android:background="@drawable/edittext_rectanguler_bg"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />-->
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

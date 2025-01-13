@@ -11,7 +11,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/module_card"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:elevation="0dp"
             android:focusable="true"
@@ -27,13 +27,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/image_card"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:elevation="0dp"
                     app:cardBackgroundColor="@color/item_yellow"
                     app:cardCornerRadius="12dp"
@@ -42,8 +42,8 @@
 
                     <ImageView
                         android:id="@+id/module_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:padding="15dp"
                         app:tint="@color/white"
                         android:src="@drawable/dairy_brand_logo_new" />

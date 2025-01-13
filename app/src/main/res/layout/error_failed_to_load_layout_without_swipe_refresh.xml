@@ -4,7 +4,7 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/failedToLoadDataLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="#ededed"
         android:visibility="gone">
 
@@ -32,7 +32,7 @@
         <Button
             android:id="@+id/retryButton"
             android:layout_width="wrap_content"
-            android:layout_height="38dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/erro_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
