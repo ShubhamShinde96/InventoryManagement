@@ -47,10 +47,10 @@ class ProductListAdapter() : RecyclerView.Adapter<ProductListAdapter.ViewHolder>
                 availableQuantity.text = binding.root.context.resources.getString(
                     R.string.available_quantity, data.availableqty.toString()
                 )
-                quantity.setText(data.orderQty)
+                data.orderQty.toString().let { quantity.setText(it) }
                 quantity.filters = arrayOf(MaxValueInputFilter(data.availableqty))
 
-                binding.quantity.addTextChangedListener(object: TextWatcher {
+                quantity.addTextChangedListener(object: TextWatcher {
                     override fun beforeTextChanged(
                         s: CharSequence?,
                         start: Int,
@@ -67,8 +67,18 @@ class ProductListAdapter() : RecyclerView.Adapter<ProductListAdapter.ViewHolder>
                     ) {
                     }
 
-                    override fun afterTextChanged(s: Editable?) {
-                        data.orderQty = s.toString().toInt()
+                    override fun afterTextChanged(quantityValue: Editable?) {
+                        quantityValue?.let {
+                            if (it.isNotEmpty()) {
+                                try {
+                                    data.orderQty = it.toString().toInt()
+                                } catch (e: NumberFormatException) {
+                                    data.orderQty = 0
+                                }
+                            } else {
+                                data.orderQty = 0
+                            }
+                        } ?: run { data.orderQty = 0 }
                     }
                 })
             }

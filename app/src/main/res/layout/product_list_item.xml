@@ -70,8 +70,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/availableQuantity">
 
-
-                <com.google.android.material.textfield.TextInputLayout
+                <!--<com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInput_fullname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,7 +93,20 @@
                         android:textColorHint="@color/text_input_layout_bg_color"
                         android:textSize="15sp" />
 
-                </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>-->
+
+                <EditText
+                    android:id="@+id/quantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_rectanguler_bg"
+                    android:textColor="@color/white"
+                    android:hint="@string/enter_qty"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:textSize="14sp"
+                    android:textColorHint="@color/gray"
+                    android:inputType="number"/>
 
                 <!--<TextView
                     android:layout_width="match_parent"
